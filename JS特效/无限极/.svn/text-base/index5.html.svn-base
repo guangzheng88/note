@@ -1,0 +1,63 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>js无限级分类树</title>
+        <style type="text/css">
+            html, body {
+                height: 100%;
+                overflow: hidden;
+            }
+            body {
+                background: #FFF;
+            }
+        </style>
+        <script type="text/javascript">
+        /*js无限级分类树*/
+        function listtree(data, id, list, level) {
+            id = parseInt(id) || 0;
+            level = parseInt(level) || 1;
+            list = list || '';
+            var k, d, h = '';
+            for(k in data) {
+                d = data[k];
+                if (d.pid == id) {
+                    h+= '<li>'+ level +'.'+ d.name +'</li>';
+                    h+= arguments.callee(data.slice(k), d.id, list, level+1);
+                }
+            }
+            d = null;
+            if (h) {
+                list+= '<ul>'+ h +'</ul>';
+                h = null;
+            }
+            return list;
+        }
+        /*测试数据*/
+        var data = [
+            {id:1, pid:0, name: '分类A'},
+            {id:2, pid:1, name: '分类B'},
+            {id:3, pid:0, name: '分类C'},
+            {id:4, pid:3, name: '分类D'},
+            {id:5, pid:4, name: '分类E'},
+            {id:6, pid:1, name: '分类F'}
+        ];
+        /*执行*/
+        window.onload = function(){
+            var tree = document.getElementById('tree').innerHTML= listtree(data);
+            tree.innerHTML = listtree(data);
+            tree = null; 
+        };        
+        window.onbeforeunload = function(){
+            return '看完了？';
+        };
+            /**页面加载时只执行onload
+             *  页面关闭时先执行onbeforeunload，最后onunload
+             *  页面刷新时先执行onbeforeunload，然后onunload，最后onload。
+             */
+        </script>
+    </head>
+    <body>
+        <div id="tree">123</div>
+    </body>
+</html>

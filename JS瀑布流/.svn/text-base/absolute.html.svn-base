@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>瀑布流布局（绝对定位）</title>
+    <style type="text/css">
+        html, body{
+            height:100%
+        }
+        html, body, #warp p{
+            margin:0;
+            padding:0
+        }
+        #warp{
+            margin:20px auto;
+            position:relative;
+            min-height:1000px;
+        }
+        #warp .cell{
+            padding:10px;
+            border:1px solid #ccc;
+            box-shadow:2px 2px 5px #ccc;
+            overflow:hidden;
+        }
+        #warp .cell a{
+            text-decoration:none;
+            color:#878787;
+            font:14px/1.5em Microsoft YaHei;
+        }
+        img{ border:none; }
+    </style>
+</head>
+<body>
+<div id="warp" class="warp clearfix"></div>
+<script type="text/javascript">
+    var data = [
+        {imgUrl:'images/01.JPG', link:'javascript:void(0)', title:'瀑布流绝对定位01', height:273},
+        {imgUrl:'images/02.JPG', link:'javascript:void(0)', title:'瀑布流绝对定位02', height:144},
+        {imgUrl:'images/03.jpg', link:'javascript:void(0)', title:'瀑布流绝对定位03', height:168},
+        {imgUrl:'images/04.JPG', link:'javascript:void(0)', title:'瀑布流绝对定位04', height:275},
+        {imgUrl:'images/05.JPG', link:'javascript:void(0)', title:'瀑布流绝对定位05', height:288},
+        {imgUrl:'images/06.JPG', link:'javascript:void(0)', title:'瀑布流绝对定位05', height:272},
+        {imgUrl:'images/07.JPG', link:'javascript:void(0)', title:'瀑布流绝对定位06', height:285},
+        {imgUrl:'images/08.JPG', link:'javascript:void(0)', title:'瀑布流绝对定位07', height:282},
+        {imgUrl:'images/09.JPG', link:'javascript:void(0)', title:'瀑布流绝对定位08', height:190},
+        {imgUrl:'images/10.JPG', link:'javascript:void(0)', title:'瀑布流绝对定位09', height:236},
+        {imgUrl:'images/11.JPG', link:'javascript:void(0)', title:'瀑布流绝对定位10', height:225},
+        {imgUrl:'images/12.JPG', link:'javascript:void(0)', title:'瀑布流绝对定位11', height:264},
+        {imgUrl:'images/13.JPG', link:'javascript:void(0)', title:'瀑布流绝对定位12', height:144},
+        {imgUrl:'images/14.JPG', link:'javascript:void(0)', title:'瀑布流绝对定位13', height:192},
+        {imgUrl:'images/15.JPG', link:'javascript:void(0)', title:'瀑布流绝对定位14', height:343}
+    ];
+    var waterFull = function (options) {
+        var id = options.id,
+                picWidth = options.picWidth || 190,
+                columnPadding = options.columnPadding || 10,
+                columnBorder = options.columnBorder || 1,
+                columnMarginRight = options.columnMargin || 20,
+                // 格子总宽度
+                cellClientWidth = picWidth + columnPadding * 2 + columnBorder * 2,
+                obody = document.getElementsByTagName('body')[0],
+                owarp = document.getElementById(id),
+                // 用于记录当前插入的格子数量
+                nowNum = 0,
+                cells = []; // 用于记录每个单独层对象
+
+        // 获取列数
+        function getColumnNum() {
+            // 根据每列的宽度来计算总共的列数
+            var columnNum = Math.floor(obody.clientWidth / (cellClientWidth + columnMarginRight));
+            // 然后再设置owarp的宽度，是其保持居中
+            owarp.style.width = columnNum * (cellClientWidth + columnMarginRight) - columnMarginRight + 'px';
+            return columnNum;
+        }
+
+        // 创建格子
+        function createCell(left, top, link, imgUrl, imgHeight, title) {
+            var cssText = 'position:absolute;left:' + left + 'px;top:' + top + 'px';
+            var inHTML = '<a href="' + link + '" target="_blank"><img src="' + imgUrl + '" alt="' + title + '" height="' + imgHeight + 'px"><p class="title">' + title + '</p></a>';
+            //console.log(inHTML);
+            var div = document.createElement('div');
+            div.className = 'cell';
+            div.style.cssText = cssText;
+            div.innerHTML = inHTML;
+            return div;
+        }
+
+        // 插入数据
+        function insert(data) {
+            var fragElement = document.createDocumentFragment();
+            if (data.length > 0) {
+                for (var i = 0, n = data.length; i < n; i++) {
+                    var cell = createCell(-9999, -9999, data[i].link, data[i].imgUrl, data[i].height, data[i].title);
+                    fragElement.appendChild(cell);
+                    cells.push(cell);
+                }
+                owarp.appendChild(fragElement);
+            }
+            // 插入后再排序
+            sort();
+        }
+
+        //排序
+        function sort(){
+            var num = getColumnNum(), left, top, column;
+            //nowNum的作用是不让已经加载的数据重新计算定位排列
+            for (var j = nowNum, k = cells.length; j < k; j++, nowNum++) {
+                // 初始化top的值
+                top = 0;
+                // 获取当前为第几列
+                column = j < num ? j : j % num;
+                // 计算可以得到当前列的LEFT值
+                left = column * (cellClientWidth + columnMarginRight);
+                cells[j].style.left = left + 'px';
+                if (j < num) {
+                    // 第一列top值为0
+                    cells[j].style.top = '0px';
+                } else {
+                    // 计算TOP值，等于当前格子的顶上每列的高度相加
+                    for (var m = column; m < j; m = m + num) {
+                        top = top + cells[m].offsetHeight + columnMarginRight;
+                    }
+                    cells[j].style.top = top + 'px';
+                }
+            }
+        }
+
+        // resize 重新排列
+        function resort() {
+            // 设置nowNum=0即可重排
+            nowNum = 0;
+            // 重排
+            sort();
+        }
+        // 暴露接口
+        return {
+            insert:insert,
+            resort:resort
+        }
+
+    };
+    var tool = {
+        on:function (element, type, func) {
+            if (element.addEventListener) {
+                element.addEventListener(type, func, false); //false 表示冒泡
+            } else if (element.attachEvent) {
+                element.attachEvent('on' + type, func);
+            } else {
+                element['on' + type] = func;
+            }
+        },
+        getPageHeight:function () {
+            return document.documentElement.scrollHeight || document.body.scrollHeight;
+        },
+        // 获取页面卷去的高度
+        getScrollTop:function () {
+            return document.documentElement.scrollTop || document.body.scrollTop;
+        },
+        // 获取页面可视区域宽度
+        getClientHeigth:function () {
+            return document.documentElement.clientHeight || document.body.clientHeight;
+        },
+        timer:null,
+        timer2:null
+    };
+    var myWaterFull = waterFull({id:'warp'});
+    // 初始化的数据
+    myWaterFull.insert(data);
+    tool.on(window, 'scroll', function () {
+        clearTimeout(tool.timer); //清除上一次，性能优化
+        tool.timer = setTimeout(function () {
+            var height = tool.getPageHeight();
+            var scrollTop = tool.getScrollTop();
+            var clientHeight = tool.getClientHeigth();
+            // 如果滚动到最底部，就加载
+            if (scrollTop + clientHeight > height - 50) myWaterFull.insert(data);
+        }, 500);
+    });
+    tool.on(window, 'resize', function () {
+        clearTimeout(tool.timer2);
+        tool.timer2 = setTimeout(function () {
+            myWaterFull.resort();
+        }, 500)
+    })
+</script>
+</body>
+</html>

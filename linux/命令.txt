@@ -1,0 +1,37 @@
+Ubuntu命令行窗口的快捷键
+        打开命令行窗口： Ctrl+Alt+T
+        在打开的命令行窗口中打开一个新的Tab： Ctrl+Shift+T
+        在同一窗口的Tab间切换： Ctrl+Page Up 或者 Ctrl+Page Down
+        Ctrl+a  光标移动到开始位置
+        Ctrl+e  光标移动到最末尾
+        Ctrl+k  删除此处至末尾的所有内容
+        Ctrl+u  删除此处至开始的所有内容
+        Ctrl+d  删除当前字符
+        Ctrl+l  相当于clear，即清屏
+        Ctrl+r  查找历史命令
+        Ctrl+b  向回移动光标
+        Ctrl+f  向前移动光标
+        Ctrl+&  恢复 ctrl+h 或者 ctrl+d 或者 ctrl+w 删除的内容
+        Ctrl+Left-Arrow 光标移动到上一个单词的词首
+        Ctrl+Right-Arrow    光标移动到下一个单词的词尾
+        Ctrl+d  关闭终端
+        Ctrl+c  终止进程/命令
+        Shift+PgUp/PgDn 终端上下翻页滚动
+        Ctrl+Shift+n    新终端
+        Shift+Ctrl+T    打开新的标签页
+        Shift+Ctrl+W    关闭标签页
+        Shift+Ctrl+C    复制
+        Shift+Ctrl+V    粘贴
+        Alt+数字  切换至对应的标签页
+        Ctrl+PgUp/PgDn  切换标签页
+        F11 全屏切换
+        
+1.Netstat 用于显示与IP 、TCP 、UDP 和ICMP 协议相关的统计数据，一般用于检验本机各端口的网络连接情况
+
+2.grep命令是一种强大的文本搜索工具，它能使用正则表达式搜索文本，并把匹配的行打印出来
+
+3.sudo -i是Linux终端命令下改变用户对命令使用权限的命令，
+例如，在Linux命令终端中，开始为“user@ubuntu:~$”,当使用该命令后，会出现输入密码的提示，之后输入密码，就会变为“root@ubuntu:~#”，这样就是改变了用户对一些命令的权限。
+
+4.解决中文乱码
+export LC_ALL=en_US.UTF8

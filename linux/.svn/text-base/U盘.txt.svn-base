@@ -1,0 +1,5 @@
+1.关于优盘无法读取问题,只读文件需将它移动到本机目录
+     cd /media/E0EA-2520/        //优盘一般在/media目录下，E0EA-2520是优盘名称
+     然后移动到主目录
+     ls
+     cp -r /media/E0EA-2520/mobile /home/ljlia/rgz/

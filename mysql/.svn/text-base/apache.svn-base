@@ -1,0 +1,57 @@
+一、apache的安装
+１． sudo apt-get update
+２．sudo apt-get install apache2
+３．Apache安装完成后，默认的网站根目录是"/var/www/html"
+
+二、修改配置文件
+sudo vim /etc/apache2/apache2.conf
+
+sudo vim /etc/apache2/sites-available/default
+
+三、命令
+sudo /etc/init.d/apache2 start　启动
+sudo /etc/init.d/apache2 restart　重启 
+
+四、安装PHP
+sudo apt-get install libapache2-mod-php5 php5
+安装curl
+sudo apt-get install curl libcurl3 libcurl3-dev php5-curl
+
+五、开启错误信息
+sudo vim /etc/php5/apache2/php.ini
+    把 display_errors = Off 改为 display_errors = On
+    把 error_reporting = xxx 改为 error_reporting = E_ALL | E_STRICT
+修改Apache的 httpd.conf
+    php_flag display_errors on
+    php_value error_reporting 2039
+
+六、删除 mysql
+    sudo apt-get autoremove --purge mysql-server-5.0
+    sudo apt-get remove mysql-server
+    sudo apt-get autoremove mysql-server
+    sudo apt-get remove mysql-common //这个很重要上面的其实有一些是多余的。
+
+七、安装mysql
+sudo apt-get install mysql-server
+
+八、添加mysql扩展
+sudo apt-get install php5-mysql
+在php　ini中添加如下代码,
+extension="/usr/lib/php5/20090626+lfs/mysql.so"
+
+九、配置apache的虚拟主机
+    １．默认情况下，apache有一个默认的虚拟主机文件叫000-default.conf。我们将会复制000-default.conf文件内容到我们新的虚拟主机配置文件中。
+    sudo cp /etc/apache2/sites-enabled/000-default /etc/apache2/sites-available/test.conf
+    sudo cp /etc/apache2/sites-enabled/000-default /etc/apache2/sites-available/mobile.conf
+    ２．然后修改相对应的虚拟主机域名，其实就是配置vhosts
+    ３．把默认的禁用，把新建的配置文件两个启用
+        sudo a2dissite 000-default
+        sudo a2ensite test.conf
+        sudo a2ensite mobile.conf
+    ４．重启apache后生效
+         sudo /etc/init.d/apache2 restartv
+    ６．配置hosts
+    　 sudo /etc/hosts
+        127.0.0.1 test.my
+        127.0.0.1 mobile.my
+    ５．至此就可以分别访问test.my和mobile.my两个域名了

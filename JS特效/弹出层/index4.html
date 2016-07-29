@@ -1,0 +1,138 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>点击文字弹出层</title>
+    <style type="text/css"> 
+<!-- 
+*{font-size:12px;font-family:Verdana, Geneva, sans-serif;line-height:14px}
+p{margin:0px; padding:0px;}
+a{color:#039} 
+a:hover{color:#f60} 
+.pop{position:absolute;left:40px;top:20px;width:380px;height:240px;background:#fff;border:8px solid #DDD;} 
+.pop_head{position:relative; height:18px;}
+.pop_head img{ border:none; margin:8px 0px 0 0;}
+.pop_head a{position:absolute;right:8px;line-height:20px;color:#000;text-decoration:none} 
+.pop_head a:hover{color:#f60;text-decoration:none} 
+.pop_body{padding:0 12px 2px} 
+.popdiv{display:block; width:12px; height:20px;}
+.popdiv img{ border:none;}
+.popbox{ position:relative; height:360px; width:680px;}
+.border{ border:solid 1px #8e8e8e;height:240px}
+.miaosu{ line-height:16px; background:#fff6ea; border:solid 1px #ffecd5; padding:4px 8px; color:#666; margin-top:5px;}
+.fomdiv{ margin-top:12px; }
+.fomdiv span{ display:block; float:left;line-height:32px;font-size:14px; color:#444;}
+.tcinp{ width:160px; height:26px; border: solid 1px #DDD; font-size:14px; padding-left:5px; line-height:26px;}
+.pop_but{ background: url(images/tbg.jpg) no-repeat; width:69px; height:29px; border: none; color:#fff; text-align:center; line-height:29px; cursor:pointer}
+.popbutdiv{ margin:8px 0 16px 74px;}
+.pop_p{ line-height:16px; color:#888; padding-top:5px; border-top:dashed 1px #CCC;}
+-->
+ 
+</style>
+</head>
+<body>
+    <!--首先设置一个层:-->
+    <div class="popbox">
+        <div id="pop" class="pop" style="display: none">
+            <div class="border">
+                <div class="pop_head">
+                    <a href="javascript:void(0);" onclick="hide()">
+                        <img  src="images/gb.jpg" width="11" height="10" /></a></div>
+                <div class="pop_body">
+                    <p>
+                        1111111111111111111111111</p>
+                    <div class="miaosu">
+                        利海米兰春天地址为:岳麓区联丰路298号（猴子石大桥以西，湖南中医药大学正对面）,详情请致电售楼处:400-7055-111转52159
+                    </div>
+                    <div class="fomdiv">
+                        <span>手机号码：</span><input name="" class="tcinp" type="text" /></div>
+                    <div class="popbutdiv">
+                        <input name="button" type="submit" class="pop_but" id="button" value="提交" /></div>
+                    <p class="pop_p">
+                        1.网络繁忙时会有延迟，请不要在短时间内多次重复发送<br />
+                        2.每个手机号码当日可接收5条楼盘信息
+                    </p>
+                </div>
+            </div>
+        </div>
+        <!--弹出层的按钮:-->
+        <a href="javascript:void(0);" onclick="show();" class="popdiv">
+            <img  src="images/phone.gif" width="12" height="19" /></a>
+    </div>
+    <div class="popbox">
+        <div id="pop2" class="pop" style="display: none">
+            <div class="border">
+                <div class="pop_head">
+                    <a href="javascript:void(0);" onclick="hide2()">
+                        <img  src="images/gb.jpg" width="11" height="10" /></a></div>
+                <div class="pop_body">
+                    <p>
+                        22222222222222222222</p>
+                    <div class="miaosu">
+                        利海米兰春天地址为:岳麓区联丰路298号（猴子石大桥以西，湖南中医药大学正对面）,详情请致电售楼处:400-7055-111转52159
+                    </div>
+                    <div class="fomdiv">
+                        <span>手机号码：</span><input name="" class="tcinp" type="text" /></div>
+                    <div class="popbutdiv">
+                        <input name="button" type="submit" class="pop_but" id="button" value="提交" /></div>
+                    <p class="pop_p">
+                        1.网络繁忙时会有延迟，请不要在短时间内多次重复发送<br />
+                        2.每个手机号码当日可接收5条楼盘信息
+                    </p>
+                </div>
+            </div>
+        </div>
+        <!--弹出层的按钮:-->
+        <a href="javascript:void(0);" onclick="show2();" class="popdiv">
+            <img  src="images/phone.gif" width="12" height="19" /></a>
+    </div>
+    <script type="text/javascript">
+        var EX = {
+            addEvent: function (k, v) {
+                var me = this;
+                if (me.addEventListener)
+                    me.addEventListener(k, v, false);
+                else if (me.attachEvent)
+                    me.attachEvent("on" + k, v);
+                else
+                    me["on" + k] = v;
+            },
+            removeEvent: function (k, v) {
+                var me = this;
+                if (me.removeEventListener)
+                    me.removeEventListener(k, v, false);
+                else if (me.detachEvent)
+                    me.detachEvent("on" + k, v);
+                else
+                    me["on" + k] = null;
+            },
+            stop: function (evt) {
+                evt = evt || window.event;
+                evt.stopPropagation ? evt.stopPropagation() : evt.cancelBubble = true;
+            }
+        };
+        document.getElementById('pop').onclick = EX.stop;        
+        var url = '#';
+        function show() {
+            var o = document.getElementById('pop');
+            o.style.display = "";
+            setTimeout(function () { EX.addEvent.call(document, 'click', hide); });
+        }
+        function hide() {
+            var o = document.getElementById('pop');
+            o.style.display = "none";
+            EX.removeEvent.call(document, 'click', hide);
+        }
+        function show2() {
+            var o = document.getElementById('pop2');
+            o.style.display = "";
+            setTimeout(function () { EX.addEvent.call(document, 'click', hide2); });
+        }
+        function hide2() {
+            var o = document.getElementById('pop2');
+            o.style.display = "none";
+            EX.removeEvent.call(document, 'click', hide2);
+        } 
+    </script>
+</body>
+</html>

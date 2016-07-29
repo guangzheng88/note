@@ -1,0 +1,43 @@
+一，出现乱码的原因分析
+    1，保存文件时候，文件有自己的文件编码，就是汉字，或者其他国语言，以什么编码来存储
+    2，输出的时候，要给内容指定编码，如以网页的形势输入时<meta http-equiv="Content-Type" content="text/html; charset=utf8" />
+    3,从数据库取出数据时，搞不清楚数据库，设置的字符集
+    4，以汉字为例，汉字本来也有编码的，一个汉字gbk要二个字符，而utf8要三个字符
+
+一、HTML字符编码
+在 HEAD 里面加入这段内容：
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+不过现在HTML5，只需在 HEAD 里面加入这段内容：
+
+<meta charset="UTF-8" />
+
+或者将UTF-8改成你所使用的编码
+
+二、PHP编码
+    //设置页面头信息 
+    header('Content-Type: text/html; charset=iso-8859-1'); 
+    header('Content-Type: text/html; charset=utf-8'); 
+    header('Content-Type: text/plain'); 
+    header('Content-Type: image/jpeg'); 
+    header('Content-Type: application/zip'); 
+    header('Content-Type: application/pdf'); 
+    header('Content-Type: audio/mpeg'); 
+    header('Content-Type: application/x-shockwave-flash'); 
+
+    跳转：
+    header(“Location: http://www.example.com/”);
+
+    指定内容：
+    header(‘Content-type: application/pdf’);
+
+    附件：
+    header(‘Content-type: application/pdf’); // 指定内容格式
+    header(‘Content-Disposition: attachment; filename=”downloaded.pdf”‘); // 指定内容为附件
+    readfile(‘original.pdf’); // 打开文件，并输出
+
+三、Mysql编码
+    1. 存入和取出时对应环节的编码不一致 这个会造成乱码是显而易见的
+    2. 单个流程中三步的编码不一致 即上面任意一幅图中的同方向的三步中，只要两步或者两部以上的编码有不一致就有可能出现编解码错误。如果差异的两个字符集之间无法进行无损编码转换，那么就一定会出现乱码
+    3.在MySQL中最常见的乱码问题的起因就是错进错出

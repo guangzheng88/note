@@ -1,0 +1,291 @@
+<font color=red><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>可移动的弹出框</title>
+<style type="text/css">
+<!--
+* {
+    padding:0;
+    margin:0;
+}
+#upcontent {
+    list-style-position: outside;
+    list-style-image: none;
+    list-style-type: none;
+}
+#upcontent li {
+    font-size:12px;
+    color:#333;
+    line-height:150%;
+}
+#bodyL {
+    float:left;
+    width:84px;
+    margin-right:2px;
+}
+#tittleup {
+    font-size:14px;
+    font-weight:bold;
+    color:#000066;
+    padding-left:25px;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    border-bottom-color: #d0daec;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+}
+a.od {
+    float:right;
+    font-size:14px;
+    color: #CC0000;
+    text-decoration: none;
+}
+a.od:hover {
+    color:#FF0000;
+}
+#fd {
+    background:#EDF1F8;
+    border: 2px solid #849BCA;
+    margin-top:2px;
+    margin-left:2px;
+    float:left;
+    overflow:hidden;
+    position:absolute;
+    left:0px;
+    top:0px;
+    cursor:move;
+    float:left;/*filter:alpha(opacity=50);*/
+    z-index: 10;
+}
+.contentup {
+    padding:20px;
+}
+}
+-->
+</style>
+</head>
+<body >
+<div id="bodyL"> <a href="#" onclick = "show('fd',event);return false;"> [打开层] </a> </div>
+<div id="fd" style="display:none;filter:alpha(opacity=100);opacity:1;">
+  <div class="contentup"> <a href="#" class="od" onclick = "closeed('fd');return false;"> 关 闭 </a>
+    <div id="tittleup">销售话术</div>
+    <ul id="upcontent">
+      <li><span style='font-weight: bold; color:red;'>销售代表(刘象的同学或者朋友):</span> 飞人,(刘象), 我的邮件收到了么? </li>
+      <li><span style='font-weight: bold; color:green;'><span style='font-weight: bold; color:green;'>刘象：</span></span>收到了啊,是个3G人才视频招聘网站，干嘛啊 </li>
+      <li><span style='font-weight: bold; color:red;'>销售代表(刘象的同学或者朋友):</span>兄弟，帮忙注册一份简历，我在做这个网站的推广工作。 </li>
+      <li><span style='font-weight: bold; color:green;'>刘象：</span>好。晚上回去弄。</li>
+      <li> <span style='font-weight: bold; color:red;'>销售代表(刘象的同学或者朋友):</span>快点哟，我还要去帮你拍摄个求职视频。</li>
+      <li><span style='font-weight: bold; color:green;'><span style='font-weight: bold; color:green;'>刘象：</span></span>好吧。为了将来找份好工作，现在准备秀。 </li>
+      <li><span style='font-weight: bold; color:red;'>销售代表(刘象的同学或者朋友):</span>拍好了要收你20元钱的，因为要给你的视频进行后期制作与格式转换的。</li>
+      <li><span style='font-weight: bold; color:green;'><span style='font-weight: bold; color:green;'>刘象：</span></span>不会吧，我不拍。</li>
+      <li> <span style='font-weight: bold; color:red;'>销售代表(刘象的同学或者朋友):</span>是朋友么，这点小忙都不帮？绝交。 </li>
+      <li><span style='font-weight: bold; color:green;'>刘象：</span>怕你了。明天拍……</li>
+    </ul>
+  </div>
+</div>
+<script type="text/javascript">
+    var prox;
+    var proy;
+    var proxc;
+    var proyc;
+    var isIe=(document.all)?true:false;
+    function setSelectState(state)
+{
+var objl=document.getElementsByTagName('select');
+for(var i=0;i<objl.length;i++)
+{
+objl[i].style.visibility=state;
+}
+}
+function mousePosition(ev)
+{
+if(ev.pageX || ev.pageY)
+{
+return {x:ev.pageX, y:ev.pageY};
+}
+return {
+x:ev.clientX + document.body.scrollLeft - document.body.clientLeft,y:ev.clientY + document.body.scrollTop - document.body.clientTop
+};
+}
+//关闭窗口
+function closeWindow()
+{
+if(document.getElementById('back')!=null)
+{
+document.getElementById('back').parentNode.removeChild(document.getElementById('back'));
+}
+if(document.getElementById('mesWindow')!=null)
+{
+document.getElementById('mesWindow').parentNode.removeChild(document.getElementById('mesWindow'));
+}
+if(isIe){
+setSelectState('');}
+}
+    function show(id,ev){/*--打开--*/
+    closeWindow();
+    var bWidth=parseInt(document.documentElement.scrollWidth);
+    var bHeight=parseInt(document.documentElement.scrollHeight)<592?592:parseInt(document.documentElement.scrollHeight);
+    if(isIe){
+    setSelectState('hidden');}
+    var back=document.createElement("div");
+    back.id="back";
+    var styleStr="top:0px;left:0px;position:absolute;background:#666;width:"+bWidth+"px;height:"+bHeight+"px;";
+    styleStr+=(isIe)?"filter:alpha(opacity=40);":"opacity:0.40;";
+    back.style.cssText=styleStr;
+    document.body.appendChild(back);
+    
+        clearInterval(prox);
+        clearInterval(proy);
+        clearInterval(proxc);
+        clearInterval(proyc);
+        var o = document.getElementById(id);
+        o.style.display = "block";
+        o.style.width = "1px";
+        o.style.height = "1px"; 
+        prox = setInterval(function(){openx(o,500)},10);
+        
+    }    
+    function openx(o,x){/*--打开x--*/
+        var cx = parseInt(o.style.width);
+        if(cx < x)
+        {
+            o.style.width = (cx + Math.ceil((x-cx)/5)) +"px";
+        }
+        else
+        {
+            clearInterval(prox);
+            proy = setInterval(function(){openy(o,300)},10);
+        }
+    }    
+    function openy(o,y){/*--打开y--*/    
+        var cy = parseInt(o.style.height);
+        if(cy < y)
+        {
+            o.style.height = (cy + Math.ceil((y-cy)/5)) +"px";
+        }
+        else
+        {
+            clearInterval(proy);            
+        }
+    }    
+    function closeed(id){/*--关闭--*/
+    closeWindow();
+        clearInterval(prox);
+        clearInterval(proy);
+        clearInterval(proxc);
+        clearInterval(proyc);        
+        var o = document.getElementById(id);
+        if(o.style.display == "block")
+        {
+            proyc = setInterval(function(){closey(o)},10);            
+        }        
+    }    
+    function closey(o){/*--打开y--*/    
+        var cy = parseInt(o.style.height);
+        if(cy > 0)
+        {
+            o.style.height = (cy - Math.ceil(cy/5)) +"px";
+        }
+        else
+        {
+            clearInterval(proyc);                
+            proxc = setInterval(function(){closex(o)},10);
+        }
+    }    
+    function closex(o){/*--打开x--*/
+        var cx = parseInt(o.style.width);
+        if(cx > 0)
+        {
+            o.style.width = (cx - Math.ceil(cx/5)) +"px";
+        }
+        else
+        {
+            clearInterval(proxc);
+            o.style.display = "none";
+        }
+    }    
+    
+    
+    /*-------------------------鼠标拖动---------------------*/    
+    var od = document.getElementById("fd");    
+    var dx,dy,mx,my,mouseD;
+    var odrag;
+    var isIE = document.all ? true : false;
+    document.onmousedown = function(e){
+        var e = e ? e : event;
+        if(e.button == (document.all ? 1 : 0))
+        {
+            mouseD = true;            
+        }
+    }
+    document.onmouseup = function(){
+        mouseD = false;
+        odrag = "";
+        if(isIE)
+        {
+            od.releaseCapture();
+            od.filters.alpha.opacity = 100;
+        }
+        else
+        {
+            window.releaseEvents(od.MOUSEMOVE);
+            od.style.opacity = 1;
+        }        
+    }
+    
+    
+    //function readyMove(e){    
+    od.onmousedown = function(e){
+        odrag = this;
+        var e = e ? e : event;
+        if(e.button == (document.all ? 1 : 0))
+        {
+            mx = e.clientX;
+            my = e.clientY;
+            od.style.left = od.offsetLeft + "px";
+            od.style.top = od.offsetTop + "px";
+            if(isIE)
+            {
+                od.setCapture();                
+                od.filters.alpha.opacity = 50;
+            }
+            else
+            {
+                window.captureEvents(Event.MOUSEMOVE);
+                od.style.opacity = 0.5;
+            }
+            
+            //alert(mx);
+            //alert(my);
+            
+        } 
+    }
+    document.onmousemove = function(e){
+        var e = e ? e : event;
+        
+        //alert(mrx);
+        //alert(e.button);        
+        if(mouseD==true && odrag)
+        {        
+            var mrx = e.clientX - mx;
+            var mry = e.clientY - my;    
+            od.style.left = parseInt(od.style.left) +mrx + "px";
+            od.style.top = parseInt(od.style.top) + mry + "px";            
+            mx = e.clientX;
+            my = e.clientY;
+            
+        }
+    }
+function showBackground(obj,endInt)
+{
+obj.filters.alpha.opacity+=1;
+if(obj.filters.alpha.opacity<endInt)
+{
+setTimeout(function(){showBackground(obj,endInt)},8);
+}
+}
+</script>
+</body>
+</html>
+</font>

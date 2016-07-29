@@ -1,0 +1,10 @@
+body, h1, h2, h3, h4, h5, h6, hr, p, blockquote, dl, dt, dd, ul, ol, li, pre, form, fieldset, legend, button, input, textarea, th, td{ margin:0; padding:0 }
+body, button, input, select, textarea{ font:12px/1.5 tahoma, arial, \5b8b\4f53, sans-serif }
+
+.warp{width:960px; margin:0 auto; overflow:hidden;}
+.full{float:left; display:inline;  margin-right:16px; margin-top:20px; overflow:hidden; width:228px;}
+.water{ width:200px; border:1px solid #ccc; padding:13px; overflow:hidden;margin-bottom:20px;}
+.water a{ border:none;}
+.water a img{ border:none;}
+.title{ color:#878787;}
+.last{margin-right:0;}

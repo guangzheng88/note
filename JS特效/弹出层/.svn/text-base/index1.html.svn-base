@@ -1,0 +1,107 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<body style="background:url(http://blogbeta./UploadFiles/2006-4/426347463.gif)">
+<script type="text/javascript" language="javascript">
+//Author:Daviv
+//Blog:http://blog.163.com/jxdawei
+//Date:2006-10-27
+//Email:jxdawei@gmail.com
+            function Alert(str){
+var objInfo=document.getElementById("bgDiv"); 
+if (objInfo) return;
+            var msgw,msgh,bordercolor;
+            msgw=400;//提示窗口的宽度
+            msgh=100;//提示窗口的高度
+            titleheight=25 //提示窗口标题高度
+            bordercolor="#808080";//提示窗口的边框颜色
+            titlecolor="#7DC3F6";//提示窗口的标题颜色
+            
+            var sWidth,sHeight;
+            sWidth=top.document.body.offsetWidth;
+            sHeight=screen.height;
+            var bgObj=top.document.createElement("div");
+            bgObj.setAttribute('id','bgDiv');
+            bgObj.style.position="absolute";
+            bgObj.style.top="0";
+            bgObj.style.background="";
+            bgObj.style.filter="progid:DXImageTransform.Microsoft.Alpha(style=3,opacity=25,finishOpacity=75";
+            bgObj.style.opacity="0.6";
+            bgObj.style.left="0";
+            bgObj.style.width=sWidth + "px";
+            bgObj.style.height=sHeight + "px";
+            bgObj.style.zIndex = "10000";
+            top.document.body.appendChild(bgObj);
+            
+            var msgObj=top.document.createElement("div")
+            msgObj.setAttribute("id","msgDiv");
+            msgObj.setAttribute("align","center");
+            msgObj.style.background="white";
+        //  msgObj.style.border="8px solid " + bordercolor;
+            msgObj.style.position = "absolute";
+            msgObj.style.left = "50%";
+            msgObj.style.top = "50%";
+            msgObj.style.font="14px/1.6em Verdana, Geneva, Arial, Helvetica, sans-serif";
+            msgObj.style.marginLeft = -msgw/2+'px';
+            msgObj.style.marginTop = -msgh/2+'px';
+            msgObj.style.width = msgw + "px";
+            msgObj.style.height =msgh + "px";
+            msgObj.style.textAlign = "center";
+            msgObj.style.lineHeight ="25px";
+            msgObj.style.zIndex = "10001";
+            /* 后加的*/
+            var bjObj=top.document.createElement('div');
+            bjObj.style.position="absolute";
+            bjObj.style.zIndex='10000';
+            bjObj.style.width=msgw+16+'px';
+            bjObj.style.height=msgh+16+'px';
+            bjObj.style.left = "50%";
+            bjObj.style.top = "50%";
+            bjObj.style.marginLeft = -(msgw+8)/2+'px' ;
+            bjObj.style.margintop = -(msgh+8)/2+'px';
+            bjObj.style.background=bordercolor;
+            bjObj.style.filter='alpha(opacity=50)';
+            bjObj.style.opacity='0.5';
+            bjObj.style.marginLeft="-208px";
+            bjObj.style.marginTop="-58px";
+   
+           var title=top.document.createElement("h4");
+           title.setAttribute("id","msgTitle");
+           title.setAttribute("align","right");
+           title.style.margin="0";
+           title.style.padding="6px";
+           title.style.background=titlecolor;
+           title.style.filter="progid:DXImageTransform.Microsoft.Alpha(startX=20, startY=20, finishX=100, finishY=100,style=1,opacity=75,finishOpacity=100);";
+           title.style.opacity="0.75";
+           title.style.border="1px solid " + bordercolor;
+           title.style.height="16px";
+           title.style.font="12px Verdana, Geneva, Arial, Helvetica, sans-serif";
+           title.style.color="white";
+           title.style.cursor="pointer";
+           title.innerHTML="关闭";
+           title.onclick=function(){
+                top.document.body.removeChild(bgObj);
+                top.document.getElementById("msgDiv").removeChild(title);
+                top.document.body.removeChild(msgObj);
+                top.document.body.removeChild(bjObj); // 后加的
+                }
+           top.document.body.appendChild(msgObj);
+           top.document.body.appendChild(bjObj); // 后加的
+           top.document.getElementById("msgDiv").appendChild(title);
+           var txt=top.document.createElement("p");
+           txt.style.margin="1em 0"
+           txt.setAttribute("id","msgTxt");
+           txt.innerHTML=str;
+           top.document.getElementById("msgDiv").appendChild(txt);
+                       setTimeout(function(){
+              top.document.body.removeChild(bgObj);
+              top.document.getElementById("msgDiv").removeChild(title);
+              top.document.body.removeChild(msgObj);
+top.document.body.removeChild(bjObj); //加上这句
+       },782000);
+            }
+        </script>
+<script type="text/javascript" src="alert.js"></script>
+</script>
+<a href='javascript:Alert("xxx");'>点击弹出!!!!!!!!!!!1</a>
+</body>
+</html>

@@ -1,0 +1,82 @@
+COOKIE
+
+用户在a.com进行了登录，希望在b.com也同步进行了登录。如果是同一个主域比较简单，可以通过setcookie中的domain参数进行设定：例如有x.a.com和xx.a.com，可以通过设置domain为a.com，从而a.com的所有二级域名都可以共享这一个cookie。基于安全方面的原因，在a.com下面设置domain为b.com是无效的
+
+１、可以使用内框iframe的方法。
+在a域名下的iframe的src访问b域名下设置cookie的页面，使两域的cookie同步
+２、利用script标签src属性访问b域设置cookie的页面
+
+SESSION
+
+默认情况下，php的session文件是保存在磁盘文件中。在php.ini配置文件中的配置项如下：
+session.save_handler = files
+session.save_path = "N;/path"
+第一个配置项是指定使用files(文件形式)存储session数据。
+第二个参数指定保存的路径。N表示生成多少级目录(不放到一个目录下，分散到多个磁盘目录中去)
+php.ini中还有一个关键配置项，如下：
+session.name = PHPSESSID
+PHPSESSID就是cookie的名称，sessionid"74dd7807n2mfml49a1i12hkc45"会保存在一个名为PHPSESSID的cookie中。
+根据http的请求机制，当浏览器请求的时候，头部信息会把浏览器中的cookie一起发给服务器。PHPSESSID这个cookie也
+是在其中发给了服务器，php引擎通过读取PHPSESSID的值来确定要载入哪个session文件
+
+1.第一种办法：把原来存储在服务器磁盘上的session数据存储到客户端的cookie中去。
+一般是把session数据按照自己定义的加密规则，加密后后存在cookie中。
+数据保存在cookie中这种做法有好处，也有坏处。
+好处是服务器的压力减小了，因为session数据不存在服务器磁盘上。根本就不会出现session读取不到的问题。
+带来的弊端是：
+网络请求占用很多。每次请求时，客户端都要通过cookie发送session数据给服务器。
+另外，浏览器对cookie的大小存在限制。每个浏览器限制是不同的。
+所以这种方案不适合高访问量，因为高访问量的情况下，每次请求浏览器都要发送session数据给服务器。一般一个cookie大小2k的样子。
+要占用很多带宽了(服务器购买带宽是一个很大费用)，成本增高。归纳为带宽性能，速度问题。
+存储到cookie中去，第二方面是安全问题：把session数据放到客户端，一般session中存的都是重要性数据(帐号、昵称、用户id等)，会存在安全问题。
+
+２．第二种思路：用一种算法(简单理解为规则)，什么机制下session是保存在哪台服务器下，那么读取的时候就按照这种规则去读取，就能定位到原来的服务器。叫做分发请求，分发到特定的服务器上去，我理解其原理是存session和读session数据保证都在一台服务器操作，就不会需要涉及到共享，具体实现方式是通过约定一种分发机制来实现。
+也叫做sticky模式(粘性会话模式)，同一个用户的访问请求都被派送到同一个服务器上。
+假设同一个用户user1，每次访问都路由到同一台服务器上,这样即便是在负载均衡的情况下，也能保证每次访问都能读取到session，不需要做session数据共享了。
+关键是多台server的原因是为负载均衡而做的，那么就得把原来负载均衡的规则假设是—a，现在改为按照session来均衡分发请求的规则—b。
+如果这台机子挂掉了，那么后续的请求按照session的规则还是会分发到这台服务器上去，但是现在不可用了。
+本来负载均衡有一个目的就是：当其中一台机子不可用的时候，会自动分发到可用的机子上去(自动判断现在要请求的机子是否可用)
+因为某种规则的session都是保存在一台服务器上，比如用户编号是1-200涉及到的session数据保存到a服务器上去。所以只要这台服务器出了问题，1-200的用户就无法实现登录了。后面就不可用了
+
+３．第三种思路：做一个中间层，专门来存储所有访问涉及到的session。也就是所有的session都存储在这里。
+服务器端统一从这里读取session数据。
+    1、 通过NFS文件共享的方式，多台php服务器共享保存session文件的磁盘。
+
+    2、保存在数据库中，这种方式的扩展性很强，可以随意增加WEB而不受影响。放在数据库里面安全方面好。
+    放在数据库里面，访问量小没有问题。大流量网站这么做，只会拖慢速度。因为得查询数据库，造成数据库压力大。
+    高并发访问的情况下,会出现很大的性能问题。
+
+    3、可以将session数据保存在memcached，redis之类内存数据库中，memcached是基于内存存储数据的，性能很高，用户并发量很大的时候尤其合适。
+    存储在redis比较理想的选择，存储在数据库中方便存储统计在线人数，那么存储在redis中也实现了这个要求。
+    也可以存储在memcache中。但redis支持的数据类型多。所以用它好点。
+
+４．复制session
+    使用技术工具复制session数据同步到多台服务器
+    这种方案是，使用一些文件同步工具(linux下的rsync)，当a服务器中的session数据有更改的时候，就会把这些更改也同步到b，c服务器上去。通过复制的方式，最终a，b，c各个服务器上都拷贝了一份session数据。
+    这种方式的弊端是，速度慢。复制数据会出现延迟。比如第一秒访问是a服务器，修改了session数据，负载均衡，可能下一秒访问是b服务器，session数据如果没有被复制到b服务器，则是读取不到session数据的，出现时间上的延迟。这种复制数据要消耗很多网络带宽的。在实际中业界用得比较少。机器的数量越多，复制数据的性能损耗越大。不具备高度扩展性。
+    复制session的方式，无论是网络带宽成本还是硬件开销上都很大的
+
+. 基于Memcache的Session共享
+Memcache由于是一款基于Libevent多路异步I/O技术的内存共享系统，简单的Key + Value数据存储模式使得代码逻辑小巧高效，因此在并发处理能力上占据了绝对优势。
+另外值得一提的是Memcache的内存hash表所特有的Expires数据过期淘汰机制，正好和Session的过期机制不谋而合，降低了过期Session数据删除的代码复杂度，对比“基于数据库的存储方案”，仅这块逻辑就给数据表产生巨大的查询压力
+ 
+1.首先安装memcache，以及memcache在php中的扩展
+2.修改php.ini文件
+session.save_handler = memcache
+session.save_path = “tcp://127.0.0.1:11211″
+使用多个 memcached server 时用逗号”,”隔开，并且和 Memcache::addServer() 文档中说明的一样，可以带额外的参数”persistent”、”weight”、”timeout”、”retry_interval” 等等，类似这样的：”tcp://host1:port1?persistent=1&weight=2,tcp://host2:port2″ 
+3.大功告成，重启apache和memcache看看phpinfo里的session配置是不是变成了memcache了。
+4.自己的程序完全不用修改，系统已经自己去找memcache来做他的session宿主啦。
+PS:如果不想整台服务器全局都是用memcache的话也可以用如下两种方法：
+修改 .htaccess
+php_value session.save_handler “memcache”
+php_value session.save_path “tcp://127.0.0.1:11211″
+修改程序
+ini_set(“session.save_handler”,”memcache”);
+ini_set(“session.save_path”, “tcp://127.0.0.1:11211″);
+
+
+
+
+
+

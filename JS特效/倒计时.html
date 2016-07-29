@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>倒计时</title>
+</head>
+<body>
+<input type="button" id="btnSubmit" value="请等待" disabled="disabled"/><span id="span">10</span>
+<script type="text/javascript">
+    var seconds = 0;
+    var t = setInterval(function(){
+        seconds += 1;
+        document.getElementById('span').innerHTML = 10 - seconds;
+        if(seconds == 10){
+            document.getElementById('btnSubmit').disabled = false;
+            document.getElementById('btnSubmit').value = '请点击';
+            //清除定时
+            window.clearInterval(t);
+        }
+    },1000);
+  
+</script>
+</body>
+</html>

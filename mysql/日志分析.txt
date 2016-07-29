@@ -1,0 +1,40 @@
+MySQL有四种类型的日志：Error Log、General Query Log、Binary Log 和 Slow Query Log。
+
+1.第一种错误日志，记录MySQL运行过程ERROR,WARNING,NOTE等信息，系统出错或者某条记录出问题可以查看ERROR日志。
+
+2.第二种日常运行日志，记录MySQL运行中的每条请求数据。
+
+3.第三种二进制日志，包含了一些事件，这些事件描述了数据库的改动，如建表、数据改动等，也包括一些潜在改动，主要用于备份恢复、回滚等操作。
+
+4.第四种慢查询日志，用于MySQL性能调优。
+
+1.Error Log
+MySQL错误日志默认以hostname.err存放在MySQL日志目录，如果不知道MySQL当前的错误日志目录可以使用查询语句：
+ show variables like 'log_error';
+ 修改错误日志地址可以在/etc/my.cnf中添加--log-error[=file_name]选项来开启mysql错误日志。
+
+错误日志记录了MySQL Server每次启动和关闭的详细信息以及运行过程中所有较为严重的警告和错误信息。
+
+知道了MySQL错误日志地址，我们就可以查看MySQL错误日志
+
+2.General Query Log
+日常请求的SQL：
+添加方式一样在 /etc/my.cnf 中添加 general-log-file[=file_name]。
+
+3.Binary Log
+启用Binlog
+修改 /etc/my.cnf：
+分析Binlog
+通过MySQL自带的mysqlbinlog 命令，可以直接查看到Binlog转码数据：
+mysqlbinlog /usr/local/var/mysql/master-bin.000117
+通过
+mysql> show binlog events;
+也可以的到binlog数据：
+查看Binlog信息
+mysql> show variables like ‘%binlog%’;
+
+4.Slow Query Log
+开启 Slow Query
+修改/etc/my.cnf：
+Slow Query工具
+Slow Query有很多查看工具，比如：MySQL自带的mysqldumpslow 和 mysqlsla，用的比较多的 py-query-digest，还可以将满请求数据丢给zabbix做显示分析处理

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>延迟加载图片</title>
+    <script type="text/javascript" src="jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="jquery.lazyload.js"></script>
+    <script type="text/javascript">
+        $(function() {
+            //正常
+            //$("img.lazy").lazyload();
+            //点击
+            // $("img.lazy").lazyload({
+            //     event : "click"
+            // });
+            //延迟５秒显示
+            // $("img.lazy").lazyload({
+            //     event : "sporty"
+            // });
+            //渐显
+            // $("img.lazy").lazyload({
+            //     effect : "fadeIn"
+            // });
+            //设置阈值(表示在视图之外的多少像素开始加载，200:视图下２００像素就开始加载,可以是负数)
+            $("img.lazy").lazyload({ threshold :-300});
+        });
+        //延迟５秒显示
+        // $(window).bind("load", function() {
+        //     var timeout = setTimeout(function() {
+        //         $("img.lazy").trigger("sporty")
+        //     }, 5000);
+        // });
+    </script>
+</head>
+<body>
+<div>
+    <img class="lazy" src="images/01.JPG" style="width:100px;"/>
+    <img class="lazy" src="images/02.JPG" style="width:200px;"/><br/>
+    <img class="lazy" src="images/03.jpg" style="width:300px;"/>
+    <img class="lazy" src="images/04.JPG" style="width:400px;"/><br/>
+    <img class="lazy" src="loading.gif" data-original="images/05.JPG" style="width:300px;"/>
+    <img class="lazy" src="loading.gif" data-original="images/06.JPG" style="width:300px;"/><br/>
+    <img class="lazy" src="loading.gif" data-original="images/07.JPG" style="width:300px;"/><br/>
+    <img class="lazy" src="loading.gif" data-original="images/08.JPG" style="width:300px;"/>
+    <img class="lazy" src="loading.gif" data-original="images/09.JPG" style="width:300px;"/><br/>
+    <img class="lazy" src="loading.gif" data-original="images/10.JPG" style="width:300px;"/><br/>
+    <img class="lazy" src="loading.gif" data-original="images/11.JPG" style="width:300px;"/>
+    <img class="lazy" src="loading.gif" data-original="images/12.JPG" style="width:300px;"/><br/>
+    <img class="lazy" src="loading.gif" data-original="images/13.JPG" style="width:300px;"/>
+    <img class="lazy" src="loading.gif" data-original="images/14.JPG" style="width:300px;"/><br/>
+    <img class="lazy" src="loading.gif" data-original="images/15.JPG" style="width:300px;"/>
+     <img class="lazy" src="loading.gif" data-original="images/01.JPG" style="width:300px;"/>
+    <img class="lazy" src="loading.gif" data-original="images/02.JPG" style="width:300px;"/><br/>
+    <img class="lazy" src="loading.gif" data-original="images/03.jpg" style="width:300px;"/>
+    <img class="lazy" src="loading.gif" data-original="images/04.JPG" style="width:300px;"/><br/>
+    <img class="lazy" src="loading.gif" data-original="images/05.JPG" style="width:300px;"/>
+    <img class="lazy" src="loading.gif" data-original="images/06.JPG" style="width:300px;"/><br/>
+    <img class="lazy" src="loading.gif" data-original="images/07.JPG" style="width:300px;"/><br/>
+    <img class="lazy" src="loading.gif" data-original="images/08.JPG" style="width:300px;"/>
+    <img class="lazy" src="loading.gif" data-original="images/09.JPG" style="width:300px;"/><br/>
+    <img class="lazy" src="loading.gif" data-original="images/10.JPG" style="width:300px;"/><br/>
+    <img class="lazy" src="loading.gif" data-original="images/11.JPG" style="width:300px;"/>
+    <img class="lazy" src="loading.gif" data-original="images/12.JPG" style="width:300px;"/><br/>
+    <img class="lazy" src="loading.gif" data-original="images/13.JPG" style="width:300px;"/>
+    <img class="lazy" src="loading.gif" data-original="images/14.JPG" style="width:300px;"/><br/>
+    <img class="lazy" src="loading.gif" data-original="images/15.JPG" style="width:300px;"/>
+     <img class="lazy" src="loading.gif" data-original="images/01.JPG" style="width:300px;"/>
+    <img class="lazy" src="loading.gif" data-original="images/02.JPG" style="width:300px;"/><br/>
+    <img class="lazy" src="loading.gif" data-original="images/03.jpg" style="width:300px;"/>
+    <img class="lazy" src="loading.gif" data-original="images/04.JPG" style="width:300px;"/><br/>
+    <img class="lazy" src="loading.gif" data-original="images/05.JPG" style="width:300px;"/>
+    <img class="lazy" src="loading.gif" data-original="images/06.JPG" style="width:300px;"/><br/>
+    <img class="lazy" src="loading.gif" data-original="images/07.JPG" style="width:300px;"/><br/>
+    <img class="lazy" src="loading.gif" data-original="images/08.JPG" style="width:300px;"/>
+    <img class="lazy" src="loading.gif" data-original="images/09.JPG" style="width:300px;"/><br/>
+    <img class="lazy" src="loading.gif" data-original="images/10.JPG" style="width:300px;"/><br/>
+    <img class="lazy" src="loading.gif" data-original="images/11.JPG" style="width:300px;"/>
+    <img class="lazy" src="loading.gif" data-original="images/12.JPG" style="width:300px;"/><br/>
+    <img class="lazy" src="loading.gif" data-original="images/13.JPG" style="width:300px;"/>
+    <img class="lazy" src="loading.gif" data-original="images/14.JPG" style="width:300px;"/><br/>
+    <img class="lazy" src="loading.gif" data-original="images/15.JPG" style="width:300px;"/>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+
+</div>
+</body>
+</html>

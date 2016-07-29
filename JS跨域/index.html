@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AJAX跨域</title>
+    <script type="text/javascript" src="jquery.js"></script>
+    <script type="text/javascript">
+        $(function(){
+            //正常ajax请求，在php页面添加header:header("Access-Control-Allow-Origin:*");可实现跨域(CORS的原理)
+            $('.button').click(function(){
+                $.ajax({
+                    type:"post",
+                    url:'http://mobile.my/index.php',
+                    data:{php:'php',name:'name'},
+                    success:function(re){
+                        $('.r_div').html(re);
+                    },
+                    error:function(){
+                        alert('ajax请求错误');
+                    }
+                });
+            });
+        });
+        function GetAjaxData() {
+            $.ajax({
+                type: "get",
+                async: false,
+                url: "http://mobile.my/index.php",
+                dataType: "jsonp",
+                jsonp: "callback",//传递给请求处理程序或页面的，标识jsonp回调函数名(一般为:callback)
+                jsonpCallback: "GetData",//callback的function名称
+                success: function (data) {
+                    alert(data.price);
+                    alert(data.code);
+                },
+                error: function () {
+                    alert('fail');
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+<div class="r_div">
+        跨域请求
+        <input type="button" class="button" value="点击请求"/>
+        <input type="button" onclick="GetAjaxData()" value="点击请求"/>
+</div>
+</body>
+</html>
